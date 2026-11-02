@@ -64,3 +64,32 @@ Run log:
 | Date       | Result | Notes               |
 |------------|--------|---------------------|
 | 2026-11-02 | OK     | First run, 12 files |
+
+
+
+## Checkpoint job (step C)
+File: spot/checkpoint_job/toy_job.py
+Tested: 2026-11-02, Windows laptop, Python 3.13
+Method: counts 2000 items, saves a checkpoint about every 3 s (write temp
+file, flush to disk, rename). On start it resumes from checkpoint.json.
+
+Test: two runs. Run 1: killed once with Ctrl+C. Run 2: killed 5 times at
+random moments with Ctrl+C. Every restart resumed from the last saved item
+(297, 474, 591, 704, 821 in run 2), never from 0.
+Result: both runs finished with total 1999000 = expected, printed CORRECT.
+Work done after the last save and before a kill (up to about 3 s) is redone
+after restart. This is expected and does not change the result.
+
+Measurements (64 saves over the two runs):
+- Checkpoint size: 39 to 44 bytes (toy state, tiny by design)
+- Save time: median about 0.07 s (run 1) and 0.11 s (run 2); most saves
+  0.04 to 0.5 s
+- Slowest saves: 4.56 s (run 1), 1.70 s (run 2). Cause not confirmed
+  (probably disk or antivirus on the laptop).
+Raw data: spot/results/checkpoint_log_laptop_2026-11-02.csv
+
+Notes:
+- Laptop numbers only. Real jobs have bigger checkpoints and S3 uploads
+  take extra time. Measure again on AWS (step E).
+- Even the worst save is small compared with the 120 s interruption notice,
+  but save time is not constant, so quote the slowest value in the report.

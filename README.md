@@ -39,4 +39,4 @@ First collection run: 2026-11-02
 Oldest record: 2026-08-04   Newest record: 2026-11-02
 Regions: us-east-1, us-west-1, eu-central-1, eu-north-1
 Types: c7i-flex.large, m7i-flex.large, t3.small
-Records per file: (721-1814)
+Records per file: (721 to 1814)

@@ -1,3 +1,5 @@
 checkpoint.json
 checkpoint.json.tmp
 checkpoint_log.csv
+demo_checkpoint.json
+fake_s3/
